@@ -1,6 +1,8 @@
 #container {
   padding: 1rem;
   background-color: gray;
+  position: relative;
+  height: 2000px;
 }
 
 div {
@@ -14,15 +16,30 @@ div {
 
 .div-1 {
   background: orange;
+  position: fixed;
+  top: 0;
+  left: 0;
+  // z-index: 30;
+  display: none;
 }
 .div-2 {
   background: tomato;
+  position: relative;
 }
 .div-3 {
   background: teal;
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  height: 700px;
+  z-index: 1;
 }
 .div-4 {
+  position: sticky;
+  //topの値を指定ないと動かない
+  top: 30px;
   width: 80px;
   height: 80px;
   background-color: violet;
+  z-index: 100;
 }

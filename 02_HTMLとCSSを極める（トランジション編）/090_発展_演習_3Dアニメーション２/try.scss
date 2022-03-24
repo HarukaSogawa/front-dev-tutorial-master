@@ -14,9 +14,48 @@ $cBlack: black;
     height: 50px;
     margin: 0 auto;
     cursor: pointer;
-
+    // perspective-origin: 300px center;
+    
     &.cubic {
-      /** スタイルをここに追加。*/
+      span {
+        border: 1px solid $cBlack;
+        box-sizing: border-box;
+        transition: all 0.3s ease;
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        line-height: 50px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        text-align: center;
+      }
+
+      .default {
+        transform: none;
+        transform-origin: center center -25px;//第三引数はZ軸
+        background-color: $cWhite;
+        // opacity: 1;
+      }
+
+      .hovering {
+        background-color: $cBlack;
+        color: $cWhite;
+        transform: rotateX(90deg);
+        transform-origin: center center -25px;
+        opacity: 0;
+      }
+
+      &:hover {
+        .default {
+          transform: rotateX(-90deg);
+          // opacity: 0;
+        }
+        .hovering {
+          transform: none;
+          opacity: 1;
+        }
+      }
     }
   }
 }

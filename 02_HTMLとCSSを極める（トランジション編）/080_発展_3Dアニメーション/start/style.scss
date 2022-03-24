@@ -15,10 +15,16 @@ $cBlack: black;
   cursor: pointer;
   transition: all 0.3s;
 
-  &.slide-bg {
+  &.cover-bg {
     position: relative;
-    overflow: hidden;
     z-index: 1;
+    transform-style: preserve-3d;//子要素を3Dにする
+    perspective: 300px;//奥行き
+
+    span {
+      display: inline-block;
+      transform: translateZ(20px);//3D空間ではz-indexが無視されるためZ軸で前後関係を設定する
+    }
 
     &::before {
       content: '';
@@ -29,9 +35,11 @@ $cBlack: black;
       position: absolute;
       top: 0;
       left: 0;
-      transform: translateX(-100%);
+      transform: rotateX(90deg);
       transition: transform 0.3s;
-      z-index: -1;
+      transform-origin: top center;
+      // z-index: -1;
+      opacity: 0;
     }
 
     &:hover {
@@ -39,6 +47,7 @@ $cBlack: black;
 
       &::before {
         transform: none;
+        opacity: 1;
       }
     }
   }
