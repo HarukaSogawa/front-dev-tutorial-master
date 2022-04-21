@@ -1,43 +1,27 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const ta = new TextAnimation('.animate-title');
-    ta.animate();
-});
 
-// text-animation.jsに以下のコードをカット＆ペースト
-// してファイル分割をしましょう。
-class TextAnimation {
-    constructor(el) {
-        this.DOM = {};
-        this.DOM.el = document.querySelector(el);
-        this.chars = this.DOM.el.innerHTML.trim().split("");
-        this.DOM.el.innerHTML = this._splitText();
-    }
-    _splitText() {
-        return this.chars.reduce((acc, curr) => {
-            curr = curr.replace(/\s+/, '&nbsp;');
-            return `${acc}<span class="char">${curr}</span>`;
-        }, "");
-    }
-    animate() {
-        this.DOM.el.classList.toggle('inview');
-    }
-}
-class TweenTextAnimation extends TextAnimation {
-    constructor(el) {
-        super(el);
-        this.DOM.chars = this.DOM.el.querySelectorAll('.char');
+
+    const els = document.querySelectorAll('.animate-title');
+    const cb = function(entries, observer) {
+      // alert('intersecting');
+      entries.forEach(entry => {
+        if(entry.isIntersecting) {
+          const ta = new TextAnimation(entry.target);
+          ta.animate();
+          observer.unobserve(entry.target);
+        } else {
+
+        }
+      });
     }
     
-    animate() {
-        this.DOM.el.classList.add('inview');
-        this.DOM.chars.forEach((c, i) => {
-            TweenMax.to(c, .6, {
-                ease: Back.easeOut,
-                delay: i * .05,
-                startAt: { y: '-50%', opacity: 0},
-                y: '0%',
-                opacity: 1
-            });
-        });
-    }
-}
+    const options = {
+      root: null, //交差対象の親要素や先祖要素を設定できる
+      rootMargin: '0px', //上右下左の順で交差点のマージンを設定できる　０でもpxか%を必ずつける
+      threshold: 0, //交差判定の基準を変更できる（ある程度大きさのある対象の場合に設定すると便利
+    };
+    
+    const io = new IntersectionObserver(cb, options);
+    els.forEach(el => io.observe(el));
+  });
+
