@@ -1,34 +1,97 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const hero = new HeroSlider(".swiper-container");
-  hero.start();
+  const main = new Main();
+});
 
-  const cb = function (el, inview) {
+class Main {
+  constructor() {
+    this.header = document.querySelector(".header");
+    this._observers = [];
+
+    this._init();
+  }
+
+  set observers(val) {
+    this._observers.push(val);
+  }
+
+  get observers() {
+    return this._observers;
+  }
+
+  _init() {
+    new MobileMenu();
+    this.hero = new HeroSlider(".swiper-container");
+    Pace.on('done', this._paceDone.bind(this));
+  }
+
+  //pace.jsのローディングが終わってからscrollInitを実行する（アニメを最初から見てもらうため）
+  _paceDone() {
+    this._scrollInit();
+  }
+
+  _inviewAnimation(el, inview) {
+    if (inview) {
+      el.classList.add("inview");
+    } else {
+      el.classList.remove("inview");
+    }
+  }
+
+  _navAnimation(el, inview) {
+    if (inview) {
+      this.header.classList.remove("triggered");
+    } else {
+      this.header.classList.add("triggered");
+    }
+  }
+
+  _textAnimation(el, inview) {
     if (inview) {
       const ta = new TweenTextAnimation(el);
       ta.animate();
     }
-  };
+  }
 
-  const so = new ScrollObserver('.tween-animate-title', cb);
-  const _inviewAnimation = function(el, inview){
-    if(inview){
-      el.classList.add('inview');
-    }else{
-      el.classList.remove('inview');
+  _toggleSlideAnimation(el, inview) {
+    if (inview) {
+      this.hero.start();
+    } else {
+      this.hero.stop();
     }
-  };
-  const so2 = new ScrollObserver('.cover-slide', _inviewAnimation);
-  const so3 = new ScrollObserver('.travel__title', _inviewAnimation);
+  }
 
-  const header = document.querySelector('.header');
-  const _navAnimation = function(el, inview){
-    if(inview){
-      header.classList.remove('triggered');
-    }else{
-      header.classList.add('triggered');
-    }
-  };
-  const so4 = new ScrollObserver('.nav-trigger', _navAnimation, {once: false});
+  //destroy関数を作って要素を監視対象から外すとき使う（単一ページでコンテンツの切り替えを行うSPAでは監視を切らないとどんどん重くなる）
+  _destroyObservers() {
+    this.observers.forEach(ob=>{
+      ob.destroy();
+    });
+  }
 
-  new MobileMenu();
-});
+  destroy(){
+    this._destroyObservers();
+  }
+
+  _scrollInit() {
+    this.observers = new ScrollObserver(
+      ".nav-trigger",
+      this._navAnimation.bind(this),
+      {
+        once: false,
+      }
+    );
+    this.observers = new ScrollObserver(".cover-slide", this._inviewAnimation);
+    this.observers = new ScrollObserver(
+      ".travel__title",
+      this._inviewAnimation
+    );
+    this.observers = new ScrollObserver(
+      ".tween-animate-title",
+      this._textAnimation
+    );
+    this.observers = new ScrollObserver(
+      ".swiper-container",
+      this._toggleSlideAnimation.bind(this),
+      { once: false }
+    );
+  }
+}
