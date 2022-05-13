@@ -176,6 +176,15 @@ main {
 
   &__texts {
     @extend .pb-sm;
+
+    &.inview {
+      .travel__title {
+        &::before {
+          transform: translateY(-50%) scaleX(1);
+          transform-origin: right;
+        }
+      }
+    }
   }
 
   &__title {
@@ -184,14 +193,7 @@ main {
     @include p-base($display: none, $width: 100px, $height: 1px, $top: 50%, $left: -120px) {
       background-color: $cBlack;
       transform: translateY(-50%) scaleX(0);
-      transition: transform 0.3s ease;
-    }
-
-    &.inview {
-      &::before {
-        transform: translateY(-50%) scaleX(1);
-        transform-origin: right;
-      }
+      transition: transform 0.8s ease 0.5s;
     }
   }
 }
@@ -317,6 +319,7 @@ main {
   position: fixed;
   top: 70%;
   transform: translateY(-50%);
+  transition: all 0.3s ease-in;
 
   & a {
     margin: 0 40px;
@@ -324,7 +327,11 @@ main {
   }
 
   &.left {
-    left: 50px;
+    left: -50px;
+
+    &.inview {
+      left: 50px;
+    }
     & > .side__inner {
       transform-origin: top left;
       transform: rotate(-90deg);
@@ -337,7 +344,11 @@ main {
   }
 
   &.right {
-    right: 50px;
+    right: -50px;
+
+    &.inview {
+      right: 50px;
+    }
     & > .side__inner {
       transform-origin: top right;
       transform: rotate(90deg);
@@ -352,10 +363,8 @@ main {
     content: "";
     display: inline-block;
     left: -20px;
-    // top: 50%;
     width: 1em;
     height: 1em;
-    // transform: translateY(-50%);
     background-position: center;
     background-size: contain;
     background-repeat: no-repeat;

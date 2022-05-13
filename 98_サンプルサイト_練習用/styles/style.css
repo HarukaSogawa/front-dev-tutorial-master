@@ -1166,6 +1166,13 @@ main {
   z-index: -1;
 }
 
+.travel__texts.inview .travel__title::before {
+  -webkit-transform: translateY(-50%) scaleX(1);
+          transform: translateY(-50%) scaleX(1);
+  -webkit-transform-origin: right;
+          transform-origin: right;
+}
+
 .travel__title {
   position: relative;
 }
@@ -1181,17 +1188,10 @@ main {
   background-color: black;
   -webkit-transform: translateY(-50%) scaleX(0);
           transform: translateY(-50%) scaleX(0);
-  -webkit-transition: -webkit-transform 0.3s ease;
-  transition: -webkit-transform 0.3s ease;
-  transition: transform 0.3s ease;
-  transition: transform 0.3s ease, -webkit-transform 0.3s ease;
-}
-
-.travel__title.inview::before {
-  -webkit-transform: translateY(-50%) scaleX(1);
-          transform: translateY(-50%) scaleX(1);
-  -webkit-transform-origin: right;
-          transform-origin: right;
+  -webkit-transition: -webkit-transform 0.8s ease 0.5s;
+  transition: -webkit-transform 0.8s ease 0.5s;
+  transition: transform 0.8s ease 0.5s;
+  transition: transform 0.8s ease 0.5s, -webkit-transform 0.8s ease 0.5s;
 }
 
 .houses__btn {
@@ -1295,6 +1295,8 @@ main {
   top: 70%;
   -webkit-transform: translateY(-50%);
           transform: translateY(-50%);
+  -webkit-transition: all 0.3s ease-in;
+  transition: all 0.3s ease-in;
 }
 
 .side a {
@@ -1303,6 +1305,10 @@ main {
 }
 
 .side.left {
+  left: -50px;
+}
+
+.side.left.inview {
   left: 50px;
 }
 
@@ -1319,6 +1325,10 @@ main {
 }
 
 .side.right {
+  right: -50px;
+}
+
+.side.right.inview {
   right: 50px;
 }
 
